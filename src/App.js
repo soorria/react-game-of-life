@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import produce from 'immer';
 import Grid from './components/Grid';
 
@@ -49,7 +49,7 @@ function runGameOfLife(arr) {
 }
 
 function App() {
-  const [size, setSize] = useState([30, 50]);
+  const [size] = useState([30, 50]);
   const [cellSize, setCellSize] = useState(20);
   const [grid, setGrid] = useState(make2DArray(...size, false));
   const [running, setRunning] = useState(false);
