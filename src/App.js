@@ -57,7 +57,7 @@ function App() {
   const [running, setRunning] = useState(false);
   const headerRef = useRef(null);
 
-  const handleCellClick = (row, col) => {
+  const handleCellClick = (row, col) => (e) => {
     setGrid((prev) =>
       produce(prev, (copy) => {
         copy[row][col] = !copy[row][col];
@@ -81,8 +81,9 @@ function App() {
   useEffect(() => {
     if (running) {
       const id = setInterval(() => {
+        console.log("update");
         setGrid((prev) => runGameOfLife(prev));
-      }, 500);
+      }, 100);
       return () => clearInterval(id);
     }
   }, [running]);
@@ -125,7 +126,7 @@ function App() {
           </button>
         </div>
       </header>
-      <Grid handleCellClick={handleCellClick} grid={grid} />
+      <Grid handleCellUpdate={handleCellClick} grid={grid} />
     </main>
   );
 }

@@ -1,16 +1,20 @@
-import React from 'react';
-import Cell from "./Cell"
+import React from "react";
+import Cell from "./Cell";
 
-export default function Grid({ handleCellClick, grid }) {
-  return (<div className="grid">
-    {grid.map(
-      (row, i) => (
+export default function Grid({ handleCellUpdate, grid }) {
+  return (
+    <div className="grid">
+      {grid.map((row, i) => (
         <div key={i} className="row">
-          {row.map(
-            (isAlive, j) => <Cell key={`${i}-${j}`} handleClick={() => handleCellClick(i, j)} alive={isAlive} />
-          )}
+          {row.map((isAlive, j) => (
+            <Cell
+              key={`${i}-${j}`}
+              handleUpdate={handleCellUpdate(i, j)}
+              alive={isAlive}
+            />
+          ))}
         </div>
-      )
-    )}
-  </div>);
+      ))}
+    </div>
+  );
 }

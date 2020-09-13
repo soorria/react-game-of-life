@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-export default function Cell({ handleClick, alive }) {
+export default function Cell({ handleUpdate, alive }) {
   return (
     <div
-      style={{backgroundColor: alive ? 'var(--aliveCol)' : 'var(--deadCol)'}}
+      style={{ backgroundColor: alive ? "var(--aliveCol)" : "var(--deadCol)" }}
       className="cell"
-      onClick={handleClick}
-    ></div>
+      onClick={handleUpdate}
+    />
   );
 }
