@@ -1,30 +1,32 @@
-import React, { useEffect, useState, useRef } from 'react';
-import produce from 'immer';
-import Grid from './components/Grid';
+import React, { useEffect, useState, useRef } from "react";
+import produce from "immer";
+import Grid from "./components/Grid";
 
 const minPadding = 50;
 
 function make2DArray(rows, cols, fill = null) {
   const arr = new Array(rows);
   for (let i = 0; i < rows; i++) {
-    arr[i] = new Array(cols).fill(fill).map(() => fill === null ? Math.random() < 0.5 : fill);
+    arr[i] = new Array(cols)
+      .fill(fill)
+      .map(() => (fill === null ? Math.random() < 0.5 : fill));
   }
   return arr;
 }
 
 const operations = [
-  [ 0,  1],
-  [ 0, -1],
-  [ 1, -1],
-  [ 1,  0],
-  [ 1,  1],
+  [0, 1],
+  [0, -1],
+  [1, -1],
+  [1, 0],
+  [1, 1],
   [-1, -1],
-  [-1,  0],
-  [-1,  1],
+  [-1, 0],
+  [-1, 1],
 ];
 
 function runGameOfLife(arr) {
-  return produce(arr, copy => {
+  return produce(arr, (copy) => {
     const numRows = copy.length;
     const numCols = copy[0].length;
     for (let i = 0; i < numRows; i++) {
@@ -55,36 +57,38 @@ function App() {
   const [running, setRunning] = useState(false);
   const headerRef = useRef(null);
 
-  const handleCellClick = ((row, col) => {
-    setGrid(prev => produce(prev, copy => {
-      copy[row][col] = !copy[row][col]
-    }));
-  });
+  const handleCellClick = (row, col) => {
+    setGrid((prev) =>
+      produce(prev, (copy) => {
+        copy[row][col] = !copy[row][col];
+      })
+    );
+  };
 
   const resetGrid = () => {
     setRunning(false);
     setGrid(make2DArray(...size, false));
-  }
+  };
 
   const randomGrid = () => {
     setGrid(make2DArray(...size));
-  }
+  };
 
   const toggleRunning = () => {
-    setRunning(prev => !prev);
-  }
+    setRunning((prev) => !prev);
+  };
 
   useEffect(() => {
     if (running) {
       const id = setInterval(() => {
-        setGrid(prev => runGameOfLife(prev));
+        setGrid((prev) => runGameOfLife(prev));
       }, 500);
       return () => clearInterval(id);
     }
   }, [running]);
 
   useEffect(() => {
-    setGrid(prev => {
+    setGrid((prev) => {
       const newGrid = make2DArray(...size, false);
       const rowLimit = Math.min(prev.length, size[0]);
       for (let row = 0; row < rowLimit; row++) {
@@ -97,19 +101,21 @@ function App() {
     });
 
     const xSpace = window.innerWidth - minPadding * 2;
-    const ySpace = window.innerHeight - headerRef.current.clientHeight - minPadding * 2;
+    const ySpace =
+      window.innerHeight - headerRef.current.clientHeight - minPadding * 2;
 
-    setCellSize(Math.floor(Math.min(xSpace / size[1], ySpace / size[0])));
+    const cellSize = Math.floor(Math.min(xSpace / size[1], ySpace / size[0]));
 
+    setCellSize(cellSize);
   }, [size, setGrid]);
 
   return (
-    <main style={{'--size': cellSize + 'px'}}>
+    <main style={{ "--size": cellSize + "px" }}>
       <header ref={headerRef} className="header">
         <h1>Conway's Game of Life</h1>
         <div className="row">
           <button className="start" onClick={toggleRunning}>
-            {running ? 'stop' : 'start'}
+            {running ? "stop" : "start"}
           </button>
           <button className="reset" onClick={resetGrid}>
             reset
@@ -119,7 +125,7 @@ function App() {
           </button>
         </div>
       </header>
-      <Grid handleCellClick={handleCellClick} grid={grid}/>
+      <Grid handleCellClick={handleCellClick} grid={grid} />
     </main>
   );
 }
